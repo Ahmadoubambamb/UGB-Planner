@@ -1,0 +1,160 @@
+<!-- Header -->
+<div class="bg-white border-bottom px-4 py-3 d-flex align-items-center justify-content-between">
+  <div>
+    <h4 class="fw-bold mb-0" style="color:#185FA5">
+      <i class="bi bi-speedometer2 me-2"></i>Dashboard
+    </h4>
+    <small class="text-muted">Vue d'ensemble de la plateforme</small>
+  </div>
+  <a routerLink="/admin/seances/nouvelle" class="btn text-white btn-sm px-3"
+     style="background:#185FA5">
+    <i class="bi bi-plus-lg me-1"></i>Nouvelle séance
+  </a>
+</div>
+
+<div class="container-fluid p-4">
+
+  <!-- Cartes statistiques -->
+  <div class="row g-3 mb-4">
+    <div class="col-md-3 col-6">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body d-flex align-items-center gap-3">
+          <div class="rounded-3 p-3" style="background:#E6F1FB">
+            <i class="bi bi-calendar-week text-primary" style="font-size:1.5rem"></i>
+          </div>
+          <div>
+            <div class="fw-bold fs-4" style="color:#185FA5">{{ nombreSeances }}</div>
+            <div class="text-muted small">Séances cette semaine</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 col-6">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body d-flex align-items-center gap-3">
+          <div class="rounded-3 p-3" style="background:#EAF3DE">
+            <i class="bi bi-person-badge text-success" style="font-size:1.5rem"></i>
+          </div>
+          <div>
+            <div class="fw-bold fs-4 text-success">{{ nombreEnseignants }}</div>
+            <div class="text-muted small">Enseignants</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 col-6">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body d-flex align-items-center gap-3">
+          <div class="rounded-3 p-3" style="background:#FAEEDA">
+            <i class="bi bi-book text-warning" style="font-size:1.5rem"></i>
+          </div>
+          <div>
+            <div class="fw-bold fs-4 text-warning">{{ nombreCours }}</div>
+            <div class="text-muted small">Cours</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 col-6">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body d-flex align-items-center gap-3">
+          <div class="rounded-3 p-3" style="background:#FAECE7">
+            <i class="bi bi-door-open text-danger" style="font-size:1.5rem"></i>
+          </div>
+          <div>
+            <div class="fw-bold fs-4 text-danger">{{ nombreSalles }}</div>
+            <div class="text-muted small">Salles</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-3">
+
+    <!-- Dernières séances -->
+    <div class="col-md-8">
+      <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center py-3">
+          <h6 class="fw-semibold mb-0">
+            <i class="bi bi-clock-history me-2 text-primary"></i>Séances de la semaine
+          </h6>
+          <a routerLink="/admin/seances" class="btn btn-outline-primary btn-sm">
+            Voir tout
+          </a>
+        </div>
+        <div class="card-body p-0">
+          @if (chargement) {
+            <div class="text-center py-4">
+              <div class="spinner-border text-primary" role="status"></div>
+            </div>
+          } @else if (dernieresSeances.length === 0) {
+            <div class="text-center py-4 text-muted">
+              <i class="bi bi-calendar-x d-block mb-2" style="font-size:2rem"></i>
+              Aucune séance cette semaine
+            </div>
+          } @else {
+            <div class="table-responsive">
+              <table class="table table-hover mb-0">
+                <thead class="table-light">
+                  <tr>
+                    <th class="small fw-semibold">Jour</th>
+                    <th class="small fw-semibold">Horaire</th>
+                    <th class="small fw-semibold">Cours</th>
+                    <th class="small fw-semibold">Enseignant</th>
+                    <th class="small fw-semibold">Salle</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (seance of dernieresSeances; track seance.id) {
+                    <tr>
+                      <td><span class="badge bg-primary bg-opacity-10 text-primary">{{ seance.jour }}</span></td>
+                      <td class="small text-muted">{{ seance.heure_debut }} - {{ seance.heure_fin }}</td>
+                      <td class="small fw-medium">{{ seance.cours?.intitule }}</td>
+                      <td class="small">{{ seance.enseignant?.prenom }} {{ seance.enseignant?.nom }}</td>
+                      <td class="small">{{ seance.salle?.numero }}</td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Raccourcis -->
+    <div class="col-md-4">
+      <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white border-bottom py-3">
+          <h6 class="fw-semibold mb-0">
+            <i class="bi bi-lightning me-2 text-warning"></i>Accès rapide
+          </h6>
+        </div>
+        <div class="card-body d-flex flex-column gap-2 p-3">
+          <a routerLink="/admin/seances/nouvelle"
+             class="btn btn-outline-primary text-start d-flex align-items-center gap-2">
+            <i class="bi bi-plus-circle"></i>Programmer une séance
+          </a>
+          <a routerLink="/admin/enseignants"
+             class="btn btn-outline-success text-start d-flex align-items-center gap-2">
+            <i class="bi bi-person-plus"></i>Gérer les enseignants
+          </a>
+          <a routerLink="/admin/cours"
+             class="btn btn-outline-warning text-start d-flex align-items-center gap-2">
+            <i class="bi bi-book"></i>Gérer les cours
+          </a>
+          <a routerLink="/admin/salles"
+             class="btn btn-outline-danger text-start d-flex align-items-center gap-2">
+            <i class="bi bi-door-open"></i>Gérer les salles
+          </a>
+          <a routerLink="/emploi-du-temps"
+             class="btn btn-outline-secondary text-start d-flex align-items-center gap-2">
+            <i class="bi bi-eye"></i>Voir emploi du temps
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

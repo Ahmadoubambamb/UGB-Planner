@@ -1,0 +1,126 @@
+<!-- Header -->
+<div class="bg-white border-bottom px-4 py-3 d-flex align-items-center justify-content-between">
+  <div>
+    <h4 class="fw-bold mb-0" style="color:#185FA5">
+      <i class="bi bi-book me-2"></i>Gestion des cours
+    </h4>
+    <small class="text-muted">Ajouter et gérer les cours</small>
+  </div>
+  <button class="btn text-white btn-sm px-3" style="background:#185FA5"
+          (click)="ouvrirFormulaire()">
+    <i class="bi bi-plus-lg me-1"></i>Nouveau cours
+  </button>
+</div>
+
+<div class="container-fluid p-4">
+
+  @if (messageSucces) {
+    <div class="alert alert-success d-flex align-items-center gap-2">
+      <i class="bi bi-check-circle-fill"></i>{{ messageSucces }}
+    </div>
+  }
+
+  <!-- Formulaire -->
+  @if (afficherFormulaire) {
+    <div class="card border-0 shadow-sm mb-4">
+      <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+        <h6 class="fw-semibold mb-0" style="color:#185FA5">
+          <i class="bi bi-book me-2"></i>
+          {{ modeModification ? 'Modifier le cours' : 'Nouveau cours' }}
+        </h6>
+        <button class="btn btn-sm btn-outline-secondary" (click)="fermerFormulaire()">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+      <div class="card-body p-4">
+        @if (messageErreur) {
+          <div class="alert alert-danger py-2">{{ messageErreur }}</div>
+        }
+        <div class="row g-3">
+          <div class="col-md-8">
+            <label class="form-label fw-medium">Intitulé <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" [(ngModel)]="formCours.intitule"
+                   placeholder="Ex: Mathématiques" />
+          </div>
+          <div class="col-md-4">
+            <label class="form-label fw-medium">Volume horaire (h)</label>
+            <input type="number" class="form-control" [(ngModel)]="formCours.volume_horaire"
+                   min="0" placeholder="Ex: 45" />
+          </div>
+          <div class="col-12">
+            <label class="form-label fw-medium">Description</label>
+            <textarea class="form-control" [(ngModel)]="formCours.description"
+                      rows="2" placeholder="Description du cours..."></textarea>
+          </div>
+        </div>
+        <div class="d-flex gap-2 mt-3">
+          <button class="btn text-white px-4" style="background:#185FA5" (click)="enregistrer()">
+            <i class="bi bi-check-lg me-1"></i>
+            {{ modeModification ? 'Modifier' : 'Enregistrer' }}
+          </button>
+          <button class="btn btn-outline-secondary px-4" (click)="fermerFormulaire()">
+            Annuler
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Tableau -->
+  <div class="card border-0 shadow-sm">
+    <div class="card-body p-0">
+      @if (chargement) {
+        <div class="text-center py-5">
+          <div class="spinner-border text-primary"></div>
+        </div>
+      } @else if (listeCours.length === 0) {
+        <div class="text-center py-5 text-muted">
+          <i class="bi bi-book d-block mb-2" style="font-size:3rem"></i>
+          <p>Aucun cours enregistré.</p>
+          <button class="btn btn-primary btn-sm" (click)="ouvrirFormulaire()">
+            <i class="bi bi-plus me-1"></i>Ajouter un cours
+          </button>
+        </div>
+      } @else {
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+              <tr>
+                <th class="small fw-semibold ps-3">Intitulé</th>
+                <th class="small fw-semibold">Description</th>
+                <th class="small fw-semibold">Volume horaire</th>
+                <th class="small fw-semibold text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (cours of listeCours; track cours.id) {
+                <tr>
+                  <td class="ps-3 fw-medium">
+                    <i class="bi bi-book text-warning me-2"></i>{{ cours.intitule }}
+                  </td>
+                  <td class="small text-muted">{{ cours.description || '—' }}</td>
+                  <td>
+                    <span class="badge bg-warning bg-opacity-10 text-warning">
+                      {{ cours.volume_horaire }}h
+                    </span>
+                  </td>
+                  <td class="text-center">
+                    <button class="btn btn-sm btn-outline-primary me-1"
+                            (click)="ouvrirFormulaire(cours)">
+                      <i class="bi bi-pencil"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger"
+                            (click)="supprimer(cours.id)">
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    </div>
+  </div>
+
+</div>

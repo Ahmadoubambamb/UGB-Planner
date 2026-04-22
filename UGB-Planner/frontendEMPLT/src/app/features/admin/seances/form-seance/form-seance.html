@@ -1,0 +1,167 @@
+<!-- Header -->
+<div class="bg-white border-bottom px-4 py-3 d-flex align-items-center justify-content-between">
+  <div>
+    <h4 class="fw-bold mb-0" style="color:#185FA5">
+      <i class="bi bi-calendar-plus me-2"></i>
+      {{ modeModification ? 'Modifier la séance' : 'Nouvelle séance' }}
+    </h4>
+    <small class="text-muted">
+      {{ modeModification ? 'Modifier les informations de la séance' : 'Programmer une nouvelle séance' }}
+    </small>
+  </div>
+  <a routerLink="/admin/seances" class="btn btn-outline-secondary btn-sm">
+    <i class="bi bi-arrow-left me-1"></i>Retour
+  </a>
+</div>
+
+<div class="container-fluid p-4">
+  <div class="row justify-content-center">
+    <div class="col-md-7">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+
+          <!-- Erreur -->
+          @if (messageErreur) {
+            <div class="alert alert-danger d-flex align-items-center gap-2">
+              <i class="bi bi-exclamation-triangle-fill"></i>
+              {{ messageErreur }}
+            </div>
+          }
+
+          <!-- Cours -->
+          <div class="mb-3">
+            <label class="form-label fw-medium">
+              Cours <span class="text-danger">*</span>
+            </label>
+            <select class="form-select" [(ngModel)]="formSeance.cours_id">
+              <option value="">-- Sélectionner un cours --</option>
+              @for (cours of listeCours; track cours.id) {
+                <option [value]="cours.id">{{ cours.intitule }}</option>
+              }
+            </select>
+          </div>
+
+          <!-- Enseignant -->
+          <div class="mb-3">
+            <label class="form-label fw-medium">
+              Enseignant <span class="text-danger">*</span>
+            </label>
+            <select class="form-select" [(ngModel)]="formSeance.enseignant_id">
+              <option value="">-- Sélectionner un enseignant --</option>
+              @for (enseignant of listeEnseignants; track enseignant.id) {
+                <option [value]="enseignant.id">
+                  {{ enseignant.prenom }} {{ enseignant.nom }}
+                </option>
+              }
+            </select>
+          </div>
+
+          <!-- Salle -->
+          <div class="mb-3">
+            <label class="form-label fw-medium">
+              Salle <span class="text-danger">*</span>
+            </label>
+            <select class="form-select" [(ngModel)]="formSeance.salle_id">
+              <option value="">-- Sélectionner une salle --</option>
+              @for (salle of listeSalles; track salle.id) {
+                <option [value]="salle.id">
+                  {{ salle.numero }} (capacité : {{ salle.capacite }})
+                </option>
+              }
+            </select>
+          </div>
+
+
+          <!-- Classe -->
+          <div class="mb-3">
+            <label class="form-label fw-medium">
+              Classe / Niveau <span class="text-danger">*</span>
+            </label>
+            <input type="text" class="form-control"
+                  [(ngModel)]="formSeance.classe"
+                  placeholder="Ex: Licence 2 Informatique, Master 1 Réseaux..." />
+            <div class="form-text">
+              Précisez le cycle, le niveau et la spécialité
+            </div>
+          </div>
+          <!-- Jour -->
+          <div class="mb-3">
+            <label class="form-label fw-medium">
+              Jour <span class="text-danger">*</span>
+            </label>
+            <select class="form-select" [(ngModel)]="formSeance.jour">
+              <option value="">-- Sélectionner un jour --</option>
+              @for (jour of jours; track jour) {
+                <option [value]="jour">{{ jour }}</option>
+              }
+            </select>
+          </div>
+
+          <!-- Horaires -->
+          <div class="row g-3 mb-3">
+            <div class="col-6">
+              <label class="form-label fw-medium">
+                Heure début <span class="text-danger">*</span>
+              </label>
+              <select class="form-select" [(ngModel)]="formSeance.heure_debut">
+                <option value="">-- Début --</option>
+                @for (heure of horaires; track heure) {
+                  <option [value]="heure">{{ heure }}</option>
+                }
+              </select>
+            </div>
+            <div class="col-6">
+              <label class="form-label fw-medium">
+                Heure fin <span class="text-danger">*</span>
+              </label>
+              <select class="form-select" [(ngModel)]="formSeance.heure_fin">
+                <option value="">-- Fin --</option>
+                @for (heure of horaires; track heure) {
+                  <option [value]="heure">{{ heure }}</option>
+                }
+              </select>
+            </div>
+          </div>
+
+          <!-- Semaine et Année -->
+          <div class="row g-3 mb-4">
+            <div class="col-6">
+              <label class="form-label fw-medium">
+                Semaine <span class="text-danger">*</span>
+              </label>
+              <input type="number" class="form-control"
+                     [(ngModel)]="formSeance.semaine"
+                     min="1" max="53" />
+            </div>
+            <div class="col-6">
+              <label class="form-label fw-medium">
+                Année <span class="text-danger">*</span>
+              </label>
+              <input type="number" class="form-control"
+                     [(ngModel)]="formSeance.annee"
+                     min="2024" />
+            </div>
+          </div>
+
+          <!-- Boutons -->
+          <div class="d-flex gap-2">
+            <button class="btn text-white px-4"
+                    style="background:#185FA5"
+                    (click)="enregistrer()"
+                    [disabled]="chargement">
+              @if (chargement) {
+                <span class="spinner-border spinner-border-sm me-2"></span>
+              }
+              <i class="bi bi-check-lg me-1"></i>
+              {{ modeModification ? 'Modifier' : 'Enregistrer' }}
+            </button>
+            <a routerLink="/admin/seances" class="btn btn-outline-secondary px-4">
+              <i class="bi bi-x-lg me-1"></i>Annuler
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

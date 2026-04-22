@@ -1,0 +1,148 @@
+<!-- Header -->
+<div class="bg-white border-bottom px-4 py-3 d-flex align-items-center justify-content-between">
+  <div>
+    <h4 class="fw-bold mb-0" style="color:#185FA5">
+      <i class="bi bi-person-badge me-2"></i>Gestion des enseignants
+    </h4>
+    <small class="text-muted">Ajouter et gérer les enseignants</small>
+  </div>
+  <button class="btn text-white btn-sm px-3" style="background:#185FA5"
+          (click)="ouvrirFormulaire()">
+    <i class="bi bi-plus-lg me-1"></i>Nouvel enseignant
+  </button>
+</div>
+
+<div class="container-fluid p-4">
+
+  <!-- Messages -->
+  @if (messageSucces) {
+    <div class="alert alert-success d-flex align-items-center gap-2">
+      <i class="bi bi-check-circle-fill"></i>{{ messageSucces }}
+    </div>
+  }
+  @if (messageErreur && !afficherFormulaire) {
+    <div class="alert alert-danger d-flex align-items-center gap-2">
+      <i class="bi bi-exclamation-triangle-fill"></i>{{ messageErreur }}
+    </div>
+  }
+
+  <!-- Formulaire -->
+  @if (afficherFormulaire) {
+    <div class="card border-0 shadow-sm mb-4">
+      <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+        <h6 class="fw-semibold mb-0" style="color:#185FA5">
+          <i class="bi bi-person-plus me-2"></i>
+          {{ modeModification ? 'Modifier l\'enseignant' : 'Nouvel enseignant' }}
+        </h6>
+        <button class="btn btn-sm btn-outline-secondary" (click)="fermerFormulaire()">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+      <div class="card-body p-4">
+        @if (messageErreur) {
+          <div class="alert alert-danger d-flex align-items-center gap-2 py-2">
+            <i class="bi bi-exclamation-triangle-fill"></i>{{ messageErreur }}
+          </div>
+        }
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label fw-medium">Nom <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" [(ngModel)]="formEnseignant.nom"
+                   placeholder="Ex: Diallo" />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label fw-medium">Prénom <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" [(ngModel)]="formEnseignant.prenom"
+                   placeholder="Ex: Amadou" />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label fw-medium">Email <span class="text-danger">*</span></label>
+            <input type="email" class="form-control" [(ngModel)]="formEnseignant.email"
+                   placeholder="ex@univ.sn" />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label fw-medium">Téléphone</label>
+            <input type="text" class="form-control" [(ngModel)]="formEnseignant.telephone"
+                   placeholder="77XXXXXXX" />
+          </div>
+          <div class="col-md-12">
+            <label class="form-label fw-medium">Spécialité</label>
+            <input type="text" class="form-control" [(ngModel)]="formEnseignant.specialite"
+                   placeholder="Ex: Mathématiques" />
+          </div>
+        </div>
+        <div class="d-flex gap-2 mt-3">
+          <button class="btn text-white px-4" style="background:#185FA5" (click)="enregistrer()">
+            <i class="bi bi-check-lg me-1"></i>
+            {{ modeModification ? 'Modifier' : 'Enregistrer' }}
+          </button>
+          <button class="btn btn-outline-secondary px-4" (click)="fermerFormulaire()">
+            <i class="bi bi-x-lg me-1"></i>Annuler
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Tableau -->
+  <div class="card border-0 shadow-sm">
+    <div class="card-body p-0">
+      @if (chargement) {
+        <div class="text-center py-5">
+          <div class="spinner-border text-primary"></div>
+          <p class="text-muted mt-2">Chargement...</p>
+        </div>
+      } @else if (listeEnseignants.length === 0) {
+        <div class="text-center py-5 text-muted">
+          <i class="bi bi-person-x d-block mb-2" style="font-size:3rem"></i>
+          <p>Aucun enseignant enregistré.</p>
+          <button class="btn btn-primary btn-sm" (click)="ouvrirFormulaire()">
+            <i class="bi bi-plus me-1"></i>Ajouter un enseignant
+          </button>
+        </div>
+      } @else {
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+              <tr>
+                <th class="small fw-semibold ps-3">Nom complet</th>
+                <th class="small fw-semibold">Email</th>
+                <th class="small fw-semibold">Téléphone</th>
+                <th class="small fw-semibold">Spécialité</th>
+                <th class="small fw-semibold text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (enseignant of listeEnseignants; track enseignant.id) {
+                <tr>
+                  <td class="ps-3 fw-medium">
+                    <i class="bi bi-person-circle text-primary me-2"></i>
+                    {{ enseignant.prenom }} {{ enseignant.nom }}
+                  </td>
+                  <td class="small text-muted">{{ enseignant.email }}</td>
+                  <td class="small">{{ enseignant.telephone || '—' }}</td>
+                  <td>
+                    <span class="badge bg-primary bg-opacity-10 text-primary">
+                      {{ enseignant.specialite || '—' }}
+                    </span>
+                  </td>
+                  <td class="text-center">
+                    <button class="btn btn-sm btn-outline-primary me-1"
+                            (click)="ouvrirFormulaire(enseignant)">
+                      <i class="bi bi-pencil"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger"
+                            (click)="supprimer(enseignant.id)">
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    </div>
+  </div>
+
+</div>

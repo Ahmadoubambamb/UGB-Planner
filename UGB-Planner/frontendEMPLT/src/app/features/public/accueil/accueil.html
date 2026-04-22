@@ -1,0 +1,84 @@
+<!-- Hero -->
+<section class="text-white py-5"
+        style="background: #c0bfc09f; min-height: 85vh; display:flex; align-items:center">
+  <div class="container text-center">
+    <i class="bi bi-calendar3 mb-4 d-block" style="font-size:4rem; opacity:0.9;color: #7b03abf5;"></i>
+    <h1 class="display-4 fw-bold mb-3" style="color: #7b03abf5;">EduPlan</h1>
+    <h2 class="lead mb-2 fw-bold" style="color:#7b03abf5 ;">Votre emploi du temps en un rien de temps</h2>
+    <p class="mb-5 fw-bold " style="color:#7b03abf5 ;">Consultez facilement les séances, enseignants et salles</p>
+    <div class="d-flex justify-content-center gap-3 flex-wrap">
+      <a routerLink="/emploi-du-temps" style="background-color: rgb(187, 0, 255);" class="btn btn-light btn-lg px-4  ">
+        <i class="bi bi-table me-2" ></i>Voir l'emploi du temps
+      </a>
+      <a routerLink="/connexion" class="btn btn-outline-light btn-lg px-4" style="background-color: rgb(255, 94, 0);">
+        <i class="bi bi-lock me-2"></i>Espace administrateur
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Statistiques -->
+<section class="py-5 bg-light" style="background-color: #c0bfc0f5;" >
+  <div class="container">
+    <div class="row g-4 text-center">
+      <div class="col-md-3 col-6">
+        <div class="card border-0 shadow-sm h-100 p-3">
+          <i class="bi bi-person-badge text-primary mb-2" style="font-size:2rem"></i>
+          <h3 class="fw-bold text-primary">{{ nombreEnseignants }}</h3>
+          <p class="text-muted mb-0">Enseignants</p>
+        </div>
+      </div>
+      <div class="col-md-3 col-6">
+        <div class="card border-0 shadow-sm h-100 p-3">
+          <i class="bi bi-book text-success mb-2" style="font-size:2rem"></i>
+          <h3 class="fw-bold text-success">{{ nombreCours }}</h3>
+          <p class="text-muted mb-0">Cours</p>
+        </div>
+      </div>
+      <div class="col-md-3 col-6">
+        <div class="card border-0 shadow-sm h-100 p-3">
+          <i class="bi bi-calendar-week text-warning mb-2" style="font-size:2rem"></i>
+          <h3 class="fw-bold text-warning">{{ nombreSeances }}</h3>
+          <p class="text-muted mb-0">Séances cette semaine</p>
+        </div>
+      </div>
+      <div class="col-md-3 col-6">
+        <div class="card border-0 shadow-sm h-100 p-3">
+          <i class="bi bi-door-open text-danger mb-2" style="font-size:2rem"></i>
+          <h3 class="fw-bold text-danger">{{ nombreSalles }}</h3>
+          <p class="text-muted mb-0">Salles disponibles</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Fonctionnalités -->
+<section class="py-5">
+  <div class="container" >
+    <h2 class="text-center fw-bold mb-5">Fonctionnalités</h2>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100 p-4 text-center">
+          <i class="bi bi-search text-primary mb-3" style="font-size:2.5rem"></i>
+          <h5 class="fw-semibold">Consultation rapide</h5>
+          <p class="text-muted">Accédez à l'emploi du temps en quelques clics, sans inscription requise.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100 p-4 text-center">
+          <i class="bi bi-funnel text-success mb-3" style="font-size:2.5rem"></i>
+          <h5 class="fw-semibold">Filtres avancés</h5>
+          <p class="text-muted">Filtrez par enseignant, cours, salle ou semaine selon vos besoins.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100 p-4 text-center">
+          <i class="bi bi-shield-check text-warning mb-3" style="font-size:2.5rem"></i>
+          <h5 class="fw-semibold">Espace sécurisé</h5>
+          <p class="text-muted">Le CSP gère les séances depuis un espace administrateur sécurisé.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
