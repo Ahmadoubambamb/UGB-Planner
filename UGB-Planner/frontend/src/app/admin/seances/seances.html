@@ -1,0 +1,109 @@
+<div>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">
+<h1 style="font-size:22px;font-weight:700;color:#534AB7">Gestion des Seances</h1>
+<button class="btn-ugb" (click)="openCreate()">+ Nouvelle Seance</button>
+</div>
+<!-- TABLEAU -->
+<div style="background:white;border-radius:12px;overflow:hidden;
+box-shadow:0 1px 8px rgba(0,0,0,0.06)">
+<table style="width:100%;border-collapse:collapse">
+<thead><tr style="background:#F9FAFB">
+<th style="padding:14px 16px;text-align:left;font-size:13px;font-weight:600">Jour</th>
+<th style="padding:14px 16px;text-align:left">Horaire</th>
+<th style="padding:14px 16px;text-align:left">Cours</th>
+<th style="padding:14px 16px;text-align:left">Enseignant</th>
+<th style="padding:14px 16px;text-align:left">Salle</th>
+<th style="padding:14px 16px;text-align:center">Actions</th>
+</tr></thead>
+<tbody>
+@for (s of seances(); track s.id) {
+<tr style="border-top:1px solid #F3F4F6" (click)="openEdit(s)"
+style="cursor:pointer">
+<td style="padding:14px 16px">{{ s.jour_nom }}</td>
+<td style="padding:14px 16px">{{ s.heure_debut }} - {{ s.heure_fin }}</td>
+<td style="padding:14px 16px">{{ s.cours_intitule }}</td>
+<td style="padding:14px 16px">{{ s.enseignant_nom }}</td>
+<td style="padding:14px 16px">{{ s.salle_nom }}</td>
+<td style="padding:14px 16px;text-align:center">
+<button (click)="$event.stopPropagation(); openEdit(s)"
+style="background:none;border:none;color:#534AB7;cursor:pointer;margin-right:8px"> </button>
+<button (click)="$event.stopPropagation(); form.update(f=>({...f,id:s.id})); supprimer()"
+style="background:none;border:none;color:#EF4444;cursor:pointer"> </button>
+</td>
+</tr>
+}
+</tbody>
+</table>
+</div>
+<!-- MODAL (Nouvelle + Modifier) -->
+@if (showModal()) {
+<div class="modal-overlay" (click)="showModal.set(false)">
+<div class="modal-box" (click)="$event.stopPropagation()">
+<div class="modal-header">
+<h3>{{ editMode() ? 'Modifier la Seance' : 'Nouvelle Seance' }}</h3>
+<button class="modal-close" (click)="showModal.set(false)">x</button>
+</div>
+@if (erreur()) {
+<div style="background:#FEE2E2;color:#B91C1C;padding:10px;
+border-radius:8px;margin-bottom:16px;font-size:13px">{{ erreur() }}</div>
+}
+<div class="form-grid">
+<div class="form-group"><label>Jour</label>
+<select [value]="form().jour_nom"
+(change)="set('jour_nom',$any($event.target).value)">
+@for (j of jours; track j) { <option>{{ j }}</option> }
+</select></div>
+<div class="form-group"><label>Cours</label>
+<select [value]="form().cours_id"
+(change)="set('cours_id',+$any($event.target).value)">
+<option value="0">Selectionner un cours</option>
+@for (c of cours(); track c.id) {
+<option [value]="c.id">{{ c.code }} - {{ c.intitule }}</option>
+}
+</select></div>
+<div class="form-group"><label>Heure de debut</label>
+<select [value]="form().heure_debut"
+(change)="set('heure_debut',$any($event.target).value)">
+@for (h of heures; track h) { <option>{{ h }}</option> }
+</select></div>
+<div class="form-group"><label>Heure de fin</label>
+<select [value]="form().heure_fin"
+(change)="set('heure_fin',$any($event.target).value)">
+@for (h of heures; track h) { <option>{{ h }}</option> }
+</select></div>
+<div class="form-group"><label>Enseignant</label>
+<select [value]="form().enseignant_id"
+(change)="set('enseignant_id',+$any($event.target).value)">
+<option value="0">Selectionner un enseignant</option>
+@for (e of enseignants(); track e.id) {
+<option [value]="e.id">{{ e.nom }} {{ e.prenom }}</option>
+}
+</select></div>
+<div class="form-group"><label>Salle</label>
+<select [value]="form().salle_id"
+(change)="set('salle_id',+$any($event.target).value)">
+<option value="0">Selectionner une salle</option>
+@for (r of salles(); track r.id) {
+<option [value]="r.id">{{ r.nom }} ({{ r.capacite }} places)</option>
+}
+</select></div>
+</div>
+<div style="display:flex;justify-content:space-between;margin-top:24px">
+@if (editMode()) {
+<button (click)="supprimer()"
+style="background:#EF4444;color:white;border:none;
+padding:10px 20px;border-radius:8px;cursor:pointer">
+ Supprimer</button>
+} @else { <span></span> }
+<div style="display:flex;gap:12px">
+<button (click)="showModal.set(false)"
+style="padding:10px 20px;border:1px solid #E5E7EB;
+border-radius:8px;background:white;cursor:pointer">Annuler</button>
+<button class="btn-ugb" (click)="save()">
+{{ editMode() ? 'Enregistrer' : 'Creer' }}</button>
+</div>
+</div>
+</div>
+</div>
+}
+</div>

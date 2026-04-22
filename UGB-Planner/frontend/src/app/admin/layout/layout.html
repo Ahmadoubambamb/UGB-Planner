@@ -1,0 +1,25 @@
+<!-- src/app/admin/layout/layout.html -->
+<div style="display:flex">
+<!-- SIDEBAR -->
+<aside class="sidebar">
+<div class="logo"> <span>UGB Planner</span></div>
+<div class="subtitle">Admin Panel</div>
+<nav>
+<a routerLink="/admin/dashboard" routerLinkActive="active">
+ Dashboard</a>
+<a routerLink="/admin/seances" routerLinkActive="active">
+ Seances</a>
+<a routerLink="/admin/cours" routerLinkActive="active">
+ Cours</a>
+<a routerLink="/admin/enseignants" routerLinkActive="active">
+ Enseignants</a>
+<a routerLink="/admin/salles" routerLinkActive="active">
+ Salles</a>
+</nav>
+<button class="visitor-btn" (click)="goVisitor()">Visitor View</button>
+</aside>
+<!-- CONTENU PRINCIPAL -->
+<main class="main-content" style="flex:1">
+<router-outlet></router-outlet>
+</main>
+</div>

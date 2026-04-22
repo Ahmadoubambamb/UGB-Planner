@@ -1,0 +1,55 @@
+<div>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:28px">
+<h1 style="font-size:24px;font-weight:700;color:#534AB7">Tableau de Bord</h1>
+<button class="btn-ugb" (click)="nouvelleSeance()">+ Nouvelle Seance</button>
+</div>
+<!-- CARTES STATS -->
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px">
+<div style="background:white;border-radius:12px;padding:20px;
+border-left:4px solid #534AB7;box-shadow:0 1px 8px rgba(0,0,0,0.06)">
+<div style="font-size:32px;font-weight:700">{{ stats().seances }}</div>
+<div style="color:#6B7280;font-size:14px">Total Seances</div>
+</div>
+<div style="background:white;border-radius:12px;padding:20px;
+border-left:4px solid #0F6E56;box-shadow:0 1px 8px rgba(0,0,0,0.06)">
+<div style="font-size:32px;font-weight:700">{{ stats().cours }}</div>
+<div style="color:#6B7280;font-size:14px">Cours</div>
+</div>
+<div style="background:white;border-radius:12px;padding:20px;
+border-left:4px solid #6D28D9;box-shadow:0 1px 8px rgba(0,0,0,0.06)">
+<div style="font-size:32px;font-weight:700">{{ stats().enseignants }}</div>
+<div style="color:#6B7280;font-size:14px">Enseignants</div>
+</div>
+<div style="background:white;border-radius:12px;padding:20px;
+border-left:4px solid #06B6D4;box-shadow:0 1px 8px rgba(0,0,0,0.06)">
+<div style="font-size:32px;font-weight:700">{{ stats().salles }}</div>
+<div style="color:#6B7280;font-size:14px">Salles</div>
+</div>
+</div>
+<!-- GRILLE (meme logique que visitor) -->
+<div style="overflow-x:auto">
+<table class="grid-table">
+<thead><tr>
+<th>Heure</th>
+@for (j of jours; track j) { <th>{{ j }}</th> }
+</tr></thead>
+<tbody>
+@for (h of horaires; track h) {
+<tr>
+<td class="heure-col">{{ h }}</td>
+@for (j of jours; track j) {
+<td>
+@if (getSeance(j, h); as s) {
+<div class="seance-card" [class]="getCouleur(s)">
+<b>{{ s.cours_intitule }}</b>
+<small>{{ s.enseignant_nom }}</small>
+<small>{{ s.salle_nom }}</small>
+</div>
+}
+</td>
+}
+</tr>
+}
+</tbody>
+</table></div>
+</div>

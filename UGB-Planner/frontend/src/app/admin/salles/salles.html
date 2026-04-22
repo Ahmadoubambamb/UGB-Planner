@@ -1,0 +1,55 @@
+<div>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">
+<h1 style="font-size:22px;font-weight:700;color:#534AB7">Gestion des Salles</h1>
+<button class="btn-ugb" (click)="openCreate()">+ Nouvelle Salle</button>
+</div>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+@for (s of salles(); track s.id) {
+<div style="background:white;border-radius:12px;padding:20px;
+border:1px solid #E5E7EB;box-shadow:0 1px 4px rgba(0,0,0,0.05)">
+<div style="display:flex;justify-content:space-between">
+<h3 style="font-size:15px;font-weight:600">{{ s.nom }}</h3>
+<div style="display:flex;gap:8px">
+<button (click)="openEdit(s)"
+style="background:none;border:none;color:#534AB7;cursor:pointer"> </button>
+<button (click)="delete(s.id)"
+style="background:none;border:none;color:#EF4444;cursor:pointer"> </button>
+</div>
+</div>
+<p style="color:#6B7280;font-size:13px;margin-top:8px"> {{ s.batiment }}</p>
+<p style="color:#6B7280;font-size:13px"> {{ s.capacite }} places</p>
+</div>
+}
+</div>
+@if (showModal()) {
+<div class="modal-overlay" (click)="showModal.set(false)">
+<div class="modal-box" style="width:440px" (click)="$event.stopPropagation()">
+<div class="modal-header">
+<h3>{{ editMode() ? 'Modifier' : 'Nouvelle' }} Salle</h3>
+<button class="modal-close" (click)="showModal.set(false)">x</button>
+</div>
+<div class="form-group" style="margin-bottom:16px">
+<label>Nom de la salle</label>
+<input [value]="form().nom"
+(input)="set('nom',$any($event.target).value)" />
+</div>
+<div class="form-group" style="margin-bottom:16px">
+<label>Batiment</label>
+<input [value]="form().batiment" placeholder="Batiment A"
+(input)="set('batiment',$any($event.target).value)" />
+</div>
+<div class="form-group" style="margin-bottom:24px">
+<label>Capacite (places)</label>
+<input type="number" [value]="form().capacite"
+(input)="set('capacite',+$any($event.target).value)" />
+</div>
+<div style="display:flex;justify-content:flex-end;gap:12px">
+<button (click)="showModal.set(false)" style="padding:10px 20px;
+border:1px solid #E5E7EB;border-radius:8px;background:white;cursor:pointer">Annuler</button>
+<button class="btn-ugb" (click)="save()">
+{{ editMode() ? 'Enregistrer' : 'Creer' }}</button>
+</div>
+</div>
+</div>
+}
+</div>

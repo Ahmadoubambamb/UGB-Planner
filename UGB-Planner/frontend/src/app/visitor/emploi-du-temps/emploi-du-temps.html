@@ -1,0 +1,72 @@
+<div style="min-height:100vh; background:#fff">
+<!-- NAVBAR -->
+<nav style="display:flex;justify-content:space-between;align-items:center;
+padding:16px 32px;border-bottom:1px solid #E5E7EB;">
+<div style="display:flex;align-items:center;gap:8px;color:#534AB7;font-weight:700">
+<span> </span> UGB Planner
+</div>
+<button class="btn-ugb" (click)="goAdmin()">Admin Login</button>
+</nav>
+<div style="padding:32px">
+<h1 style="color:#534AB7;font-size:24px;font-weight:700;margin-bottom:24px">
+Emploi du Temps UGB</h1>
+<!-- FILTRES -->
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px">
+<div style="position:relative">
+<span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#9CA3AF"> </span>
+<input style="width:100%;padding:12px 12px 12px 36px;border:1px solid #E5E7EB;
+border-radius:8px;font-size:14px"
+placeholder="Filtrer par enseignant..."
+[value]="filtreEnseignant()"
+(input)="filtreEnseignant.set($any($event.target).value)" />
+</div>
+<div style="position:relative">
+<span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#9CA3AF"> </span>
+<input style="width:100%;padding:12px 12px 12px 36px;border:1px solid #E5E7EB;
+border-radius:8px;font-size:14px"
+placeholder="Filtrer par cours..."
+[value]="filtreCours()"
+(input)="filtreCours.set($any($event.target).value)" />
+</div>
+</div>
+<!-- NAVIGATION SEMAINE -->
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+<button (click)="semainePrec()" style="padding:10px 20px;border:1px solid #E5E7EB;
+border-radius:8px;background:white;cursor:pointer">
+< Semaine precedente</button>
+<span style="font-weight:500;color:#374151">Cette semaine ({{ semaine() }})</span>
+<button (click)="semaineSuiv()" style="padding:10px 20px;border:1px solid #E5E7EB;
+border-radius:8px;background:white;cursor:pointer">
+Semaine suivante ></button>
+</div>
+<!-- GRILLE -->
+<div style="overflow-x:auto">
+<table class="grid-table">
+<thead><tr>
+<th style="width:70px">Heure</th>
+@for (jour of jours; track jour) {
+<th>{{ jour }}</th>
+}
+</tr></thead>
+<tbody>
+@for (heure of horaires; track heure) {
+<tr>
+<td class="heure-col">{{ heure }}</td>
+@for (jour of jours; track jour) {
+<td>
+@if (getSeance(jour, heure); as s) {
+<div class="seance-card" [class]="getCouleur(s)">
+<b>{{ s.cours_intitule }}</b>
+<small>{{ s.enseignant_nom }}</small>
+<small>{{ s.salle_nom }}</small>
+</div>
+}
+</td>
+}
+</tr>
+}
+</tbody>
+</table>
+</div>
+</div>
+</div>
